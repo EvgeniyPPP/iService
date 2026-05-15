@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор вартості — I Service</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="navbar-inner">
+        <div class="logo">I <span>Service</span></div>
+        <ul class="nav-links">
+            <li><a href="index.html">Головна</a></li>
+            <li><a href="about.html">Про нас</a></li>
+            <li><a href="services.html">Послуги</a></li>
+            <li><a href="calculator.html">Калькулятор</a></li>
+            <li><a href="status.html">Статус замовлення</a></li>
+            <li><a href="contacts.html">Контакти</a></li>
+        </ul>
+        <div class="nav-auth" id="navAuth">
+            <a href="login.html" class="btn btn-outline">Увійти</a>
+            <a href="login.html" class="btn btn-primary">Реєстрація</a>
+        </div>
+    </div>
+</nav>
+
+<section class="hero" style="padding: 4rem 2rem;">
+    <div class="container">
+        <h1>Калькулятор <span>вартості</span></h1>
+        <p>Оберіть модель та послуги — отримайте точну суму ремонту</p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div style="max-width:680px; margin:0 auto;">
+
+            <div style="background:#fff; border-radius:16px; padding:2.5rem;
+                  box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+
+                <h2 style="font-size:1.4rem; font-weight:700; margin-bottom:2rem;">
+                    Оберіть параметри ремонту
+                </h2>
+
+                <div class="form-group">
+                    <label style="font-size:1rem;">
+                        📱 Крок 1 — Оберіть модель iPhone
+                    </label>
+                    <select id="deviceSelect">
+                        <option value="">-- Оберіть модель --</option>
+                    </select>
+                </div>
+
+                <div id="servicesGroup" style="display:none;">
+                    <label style="font-weight:700; font-size:1rem; display:block; margin-bottom:1rem;">
+                        🔧 Крок 2 — Оберіть послуги (можна декілька)
+                    </label>
+                    <div id="serviceCheckboxes"
+                         style="display:flex; flex-direction:column; gap:0.75rem;
+                      max-height:380px; overflow-y:auto; padding-right:0.5rem;">
+                    </div>
+                </div>
+
+                <div id="calcResult" style="display:none; margin-top:2rem;">
+                    <div style="border-top:2px solid #e2e8f0; padding-top:1.5rem;">
+
+                        <div style="margin-bottom:1.5rem;">
+                            <div style="font-weight:700; margin-bottom:0.75rem;">
+                                Обрані послуги:
+                            </div>
+                            <div id="selectedList"
+                                 style="display:flex; flex-direction:column; gap:0.5rem;">
+                            </div>
+                        </div>
+
+                        <div style="background:#eff6ff; border-radius:12px; padding:1.5rem;">
+                            <div style="display:flex; justify-content:space-between;
+                          align-items:center;">
+                                <div>
+                                    <div style="color:#64748b; font-size:0.9rem;">
+                                        Загальна вартість:
+                                    </div>
+                                    <div id="totalPrice"
+                                         style="font-size:2.5rem; font-weight:800; color:#2563eb;">
+                                    </div>
+                                </div>
+                                <div style="text-align:right;">
+                                    <div style="color:#64748b; font-size:0.9rem;">
+                                        Орієнтовний термін:
+                                    </div>
+                                    <div id="totalDuration"
+                                         style="font-weight:700; font-size:1.1rem; color:#1e293b;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <a href="order.html" class="btn btn-primary btn-lg"
+                           style="width:100%; text-align:center; display:block; margin-top:1.5rem;">
+                            Створити замовлення
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div style="background:#fef9c3; border-radius:12px; padding:1.5rem;
+                  margin-top:2rem;">
+                <div style="font-weight:700; margin-bottom:0.5rem;">💡 Важливо знати</div>
+                <p style="color:#64748b; font-size:0.9rem; line-height:1.6;">
+                    Вартість є орієнтовною та може змінитись після діагностики пристрою.
+                    Остаточна ціна узгоджується з клієнтом до початку ремонту.
+                </p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-inner">
+        <div class="footer-col">
+            <h4>I Service</h4>
+            <p>Професійний сервісний центр з ремонту смартфонів та техніки Apple</p>
+        </div>
+        <div class="footer-col">
+            <h4>Навігація</h4>
+            <a href="about.html">Про нас</a>
+            <a href="services.html">Послуги</a>
+            <a href="calculator.html">Калькулятор</a>
+            <a href="contacts.html">Контакти</a>
+        </div>
+        <div class="footer-col">
+            <h4>Клієнтам</h4>
+            <a href="login.html">Особистий кабінет</a>
+            <a href="order.html">Створити заявку</a>
+            <a href="status.html">Статус замовлення</a>
+        </div>
+        <div class="footer-col">
+            <h4>Контакти</h4>
+            <p>📞 +38 (050) 000-00-00</p>
+            <p>📍 м. Київ, вул. Прикладна 1</p>
+            <p>🕐 Пн-Сб: 9:00 - 19:00</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2024 I Service. Всі права захищені</p>
+    </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+    let deviceServices = [];
+
+    async function loadDevices() {
+        try {
+            const res = await fetch('/api/services/devices/list');
+            const devices = await res.json();
+            const select = document.getElementById('deviceSelect');
+            devices.forEach(d => {
+                const option = document.createElement('option');
+                option.value = d.device;
+                option.textContent = d.device;
+                select.appendChild(option);
+            });
+        } catch (e) {
+            console.error('Помилка завантаження моделей');
+        }
+    }
+
+    document.getElementById('deviceSelect').addEventListener('change', async function () {
+        const device = this.value;
+        const servicesGroup = document.getElementById('servicesGroup');
+        const calcResult = document.getElementById('calcResult');
+
+        calcResult.style.display = 'none';
+
+        if (!device) {
+            servicesGroup.style.display = 'none';
+            return;
+        }
+
+        try {
+            const res = await fetch(`/api/services/device/${encodeURIComponent(device)}`);
+            deviceServices = await res.json();
+
+            const container = document.getElementById('serviceCheckboxes');
+            container.innerHTML = deviceServices.map(s => `
+        <label style="display:flex; align-items:center; gap:1rem; padding:0.9rem 1rem;
+                      border:1.5px solid #e2e8f0; border-radius:10px; cursor:pointer;
+                      transition:all 0.2s;"
+               onmouseover="this.style.borderColor='#2563eb'"
+               onmouseout="if(!document.getElementById('chk_${s.id}').checked)
+                            this.style.borderColor='#e2e8f0'">
+          <input type="checkbox" id="chk_${s.id}"
+                 data-id="${s.id}"
+                 data-price="${s.price}"
+                 data-name="${s.name}"
+                 data-duration="${s.duration}"
+                 onchange="updateResult(this.closest('label'))"
+                 style="width:18px; height:18px; cursor:pointer; accent-color:#2563eb;">
+          <div style="flex:1;">
+            <div style="font-weight:600;">${s.name}</div>
+            <div style="color:#64748b; font-size:0.85rem;">${s.description || ''}</div>
+          </div>
+          <div style="text-align:right; flex-shrink:0;">
+            <div style="font-weight:700; color:#2563eb;">
+              ${s.price.toLocaleString()} грн
+            </div>
+            <div style="color:#64748b; font-size:0.8rem;">⏱ ${s.duration}</div>
+          </div>
+        </label>
+      `).join('');
+
+            servicesGroup.style.display = 'block';
+        } catch (e) {
+            console.error('Помилка завантаження послуг');
+        }
+    });
+
+    function updateResult(label) {
+        const checked = document.querySelectorAll(
+            '#serviceCheckboxes input[type="checkbox"]:checked'
+        );
+
+        document.querySelectorAll('#serviceCheckboxes label').forEach(l => {
+            const chk = l.querySelector('input[type="checkbox"]');
+            l.style.borderColor = chk.checked ? '#2563eb' : '#e2e8f0';
+            l.style.background = chk.checked ? '#eff6ff' : '#fff';
+        });
+
+        if (checked.length === 0) {
+            document.getElementById('calcResult').style.display = 'none';
+            return;
+        }
+
+        let total = 0;
+        let maxHours = 0;
+        const selectedList = document.getElementById('selectedList');
+
+        selectedList.innerHTML = '';
+
+        checked.forEach(chk => {
+            const price = parseInt(chk.dataset.price);
+            total += price;
+
+            const durationText = chk.dataset.duration;
+            const numbers = durationText.match(/\d+/g);
+            if (numbers) {
+                const maxH = parseInt(numbers[numbers.length - 1]);
+                maxHours += maxH;
+            }
+
+            selectedList.innerHTML += `
+        <div style="display:flex; justify-content:space-between;
+                    align-items:center; padding:0.5rem 0;
+                    border-bottom:1px solid #e2e8f0;">
+          <span style="color:#1e293b;">✓ ${chk.dataset.name}</span>
+          <span style="font-weight:600; color:#2563eb;">
+            ${price.toLocaleString()} грн
+          </span>
+        </div>
+      `;
+        });
+
+        document.getElementById('totalPrice').textContent =
+            total.toLocaleString() + ' грн';
+
+        document.getElementById('totalDuration').textContent =
+            maxHours <= 2 ? 'до 2 годин' :
+                maxHours <= 4 ? '2-4 години' :
+                    maxHours <= 6 ? '4-6 годин' : 'від 6 годин';
+
+        document.getElementById('calcResult').style.display = 'block';
+    }
+
+    loadDevices();
+</script>
+</body>
+</html>

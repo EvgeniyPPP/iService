@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Створити замовлення — I Service</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="navbar-inner">
+        <div class="logo">I <span>Service</span></div>
+        <ul class="nav-links">
+            <li><a href="index.html">Головна</a></li>
+            <li><a href="about.html">Про нас</a></li>
+            <li><a href="services.html">Послуги</a></li>
+            <li><a href="calculator.html">Калькулятор</a></li>
+            <li><a href="status.html">Статус замовлення</a></li>
+            <li><a href="contacts.html">Контакти</a></li>
+        </ul>
+        <div class="nav-auth" id="navAuth">
+            <a href="login.html" class="btn btn-outline">Увійти</a>
+            <a href="login.html" class="btn btn-primary">Реєстрація</a>
+        </div>
+    </div>
+</nav>
+
+<section class="hero" style="padding: 4rem 2rem;">
+    <div class="container">
+        <h1>Створити <span>замовлення</span></h1>
+        <p>Заповніть форму і ми зв'яжемося з вами найближчим часом</p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div style="max-width:560px; margin:0 auto;">
+            <div style="background:#fff; border-radius:16px; padding:2.5rem;
+                  box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+
+                <h2 style="font-size:1.4rem; font-weight:700; margin-bottom:2rem;">
+                    Дані для замовлення
+                </h2>
+
+                <div id="orderAlert"></div>
+
+                <div class="form-group">
+                    <label>Ваше ім'я *</label>
+                    <input type="text" id="clientName" placeholder="Іван Іваненко">
+                </div>
+                <div class="form-group">
+                    <label>Телефон *</label>
+                    <input type="tel" id="clientPhone" placeholder="+38 (050) 000-00-00">
+                </div>
+                <div class="form-group">
+                    <label>Пристрій *</label>
+                    <input type="text" id="clientDevice" placeholder="Наприклад: iPhone 14">
+                </div>
+                <div class="form-group">
+                    <label>Опис проблеми *</label>
+                    <textarea id="clientProblem" placeholder="Опишіть що трапилось з вашим пристроєм..."></textarea>
+                </div>
+
+                <button class="btn btn-primary btn-lg" style="width:100%;" onclick="createOrder()">
+                    Надіслати замовлення
+                </button>
+
+                <p style="color:#64748b; font-size:0.85rem; text-align:center; margin-top:1rem;">
+                    Після отримання заявки ми зв'яжемося з вами протягом 30 хвилин
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-inner">
+        <div class="footer-col">
+            <h4>I Service</h4>
+            <p>Професійний сервісний центр з ремонту смартфонів та техніки</p>
+        </div>
+        <div class="footer-col">
+            <h4>Навігація</h4>
+            <a href="about.html">Про нас</a>
+            <a href="services.html">Послуги</a>
+            <a href="calculator.html">Калькулятор</a>
+            <a href="contacts.html">Контакти</a>
+        </div>
+        <div class="footer-col">
+            <h4>Клієнтам</h4>
+            <a href="login.html">Особистий кабінет</a>
+            <a href="order.html">Створити заявку</a>
+            <a href="status.html">Статус замовлення</a>
+        </div>
+        <div class="footer-col">
+            <h4>Контакти</h4>
+            <p>📞 +38 (050) 000-00-00</p>
+            <p>📍 м. Київ, вул. Прикладна 1</p>
+            <p>🕐 Пн-Сб: 9:00 - 19:00</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2024 I Service. Всі права захищені</p>
+    </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+
+    window.addEventListener('DOMContentLoaded', () => {
+        const name = localStorage.getItem('name');
+        if (name) {
+            document.getElementById('clientName').value = name;
+        }
+    });
+
+    function showAlert(message, type) {
+        document.getElementById('orderAlert').innerHTML =
+            `<div class="alert alert-${type}">${message}</div>`;
+    }
+
+    async function createOrder() {
+        const client_name = document.getElementById('clientName').value;
+        const client_phone = document.getElementById('clientPhone').value;
+        const device = document.getElementById('clientDevice').value;
+        const problem = document.getElementById('clientProblem').value;
+
+        if (!client_name || !client_phone || !device || !problem) {
+            return showAlert('Заповніть всі обов\'язкові поля', 'error');
+        }
+
+        const token = localStorage.getItem('token');
+        const user_id = token ? JSON.parse(atob(token.split('.')[1])).id : null;
+
+        try {
+            const res = await fetch('/api/orders/create', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ client_name, client_phone, device, problem, user_id })
+            });
+            const data = await res.json();
+
+            if (data.error) return showAlert(data.error, 'error');
+
+            showAlert(`✅ Замовлення №${data.orderId} успішно створено! Ми зв'яжемося з вами найближчим часом.`, 'success');
+
+            document.getElementById('clientPhone').value = '';
+            document.getElementById('clientDevice').value = '';
+            document.getElementById('clientProblem').value = '';
+
+        } catch (e) {
+            showAlert('Помилка підключення до сервера', 'error');
+        }
+    }
+</script>
+</body>
+</html>

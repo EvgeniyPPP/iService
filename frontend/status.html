@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Статус замовлення — I Service</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="navbar-inner">
+        <div class="logo">I <span>Service</span></div>
+        <ul class="nav-links">
+            <li><a href="index.html">Головна</a></li>
+            <li><a href="about.html">Про нас</a></li>
+            <li><a href="services.html">Послуги</a></li>
+            <li><a href="calculator.html">Калькулятор</a></li>
+            <li><a href="status.html">Статус замовлення</a></li>
+            <li><a href="contacts.html">Контакти</a></li>
+        </ul>
+        <div class="nav-auth" id="navAuth">
+            <a href="login.html" class="btn btn-outline">Увійти</a>
+            <a href="login.html" class="btn btn-primary">Реєстрація</a>
+        </div>
+    </div>
+</nav>
+
+<section class="hero" style="padding: 4rem 2rem;">
+    <div class="container">
+        <h1>Статус <span>замовлення</span></h1>
+        <p>Введіть номер замовлення щоб дізнатися статус ремонту</p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div style="max-width:500px; margin:0 auto;">
+
+            <div style="background:#fff; border-radius:16px; padding:2.5rem;
+                  box-shadow:0 4px 20px rgba(0,0,0,0.08); margin-bottom:2rem;">
+                <h2 style="font-size:1.3rem; font-weight:700; margin-bottom:1.5rem;">
+                    Перевірити статус
+                </h2>
+                <div class="form-group">
+                    <label>Номер замовлення</label>
+                    <input type="number" id="orderIdInput" placeholder="Наприклад: 1">
+                </div>
+                <button class="btn btn-primary btn-lg" style="width:100%;" onclick="checkStatus()">
+                    Перевірити
+                </button>
+            </div>
+
+            <div id="statusResult" style="display:none;">
+
+                <div style="background:#fff; border-radius:16px; padding:2rem;
+                    box-shadow:0 4px 20px rgba(0,0,0,0.08); margin-bottom:1.5rem;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+                        <h3 style="font-size:1.1rem; font-weight:700;">
+                            Замовлення <span id="orderNum"></span>
+                        </h3>
+                        <span id="orderBadge" class="badge"></span>
+                    </div>
+                    <div style="display:flex; flex-direction:column; gap:0.75rem;">
+                        <div style="display:flex; justify-content:space-between;">
+                            <span style="color:#64748b;">Клієнт:</span>
+                            <span id="orderClient" style="font-weight:600;"></span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between;">
+                            <span style="color:#64748b;">Пристрій:</span>
+                            <span id="orderDevice" style="font-weight:600;"></span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between;">
+                            <span style="color:#64748b;">Проблема:</span>
+                            <span id="orderProblem" style="font-weight:600;"></span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between;" id="orderPriceRow">
+                            <span style="color:#64748b;">Вартість:</span>
+                            <span id="orderPrice" style="font-weight:600; color:#2563eb;"></span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between;" id="orderCommentRow">
+                            <span style="color:#64748b;">Коментар:</span>
+                            <span id="orderComment" style="font-weight:600;"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background:#fff; border-radius:16px; padding:2rem;
+                    box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+                    <h3 style="font-size:1.1rem; font-weight:700; margin-bottom:1.5rem;">
+                        Етапи ремонту
+                    </h3>
+                    <div class="stages-list" id="stagesList"></div>
+                </div>
+
+            </div>
+
+            <div id="statusError" style="display:none;">
+                <div class="alert alert-error">Замовлення не знайдено. Перевірте номер замовлення.</div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-inner">
+        <div class="footer-col">
+            <h4>I Service</h4>
+            <p>Професійний сервісний центр з ремонту смартфонів та техніки</p>
+        </div>
+        <div class="footer-col">
+            <h4>Навігація</h4>
+            <a href="about.html">Про нас</a>
+            <a href="services.html">Послуги</a>
+            <a href="calculator.html">Калькулятор</a>
+            <a href="contacts.html">Контакти</a>
+        </div>
+        <div class="footer-col">
+            <h4>Клієнтам</h4>
+            <a href="login.html">Особистий кабінет</a>
+            <a href="order.html">Створити заявку</a>
+            <a href="status.html">Статус замовлення</a>
+        </div>
+        <div class="footer-col">
+            <h4>Контакти</h4>
+            <p>📞 +38 (050) 000-00-00</p>
+            <p>📍 м. Київ, вул. Прикладна 1</p>
+            <p>🕐 Пн-Сб: 9:00 - 19:00</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2024 I Service. Всі права захищені</p>
+    </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+    const statusColors = {
+        'Прийнято': 'badge-blue',
+        'Діагностика': 'badge-yellow',
+        'Очікування запчастин': 'badge-orange',
+        'Ремонт': 'badge-purple',
+        'Тестування': 'badge-yellow',
+        'Готово': 'badge-green'
+    };
+
+    async function checkStatus() {
+        const id = document.getElementById('orderIdInput').value;
+        if (!id) return;
+
+        document.getElementById('statusResult').style.display = 'none';
+        document.getElementById('statusError').style.display = 'none';
+
+        try {
+            const res = await fetch(`/api/orders/status/${id}`);
+            if (!res.ok) {
+                document.getElementById('statusError').style.display = 'block';
+                return;
+            }
+
+            const data = await res.json();
+            const { order, stages } = data;
+
+            document.getElementById('orderNum').textContent = `#${order.id}`;
+            document.getElementById('orderClient').textContent = order.client_name;
+            document.getElementById('orderDevice').textContent = order.device;
+            document.getElementById('orderProblem').textContent = order.problem;
+
+            const badge = document.getElementById('orderBadge');
+            badge.textContent = order.status;
+            badge.className = 'badge ' + (statusColors[order.status] || 'badge-blue');
+
+            if (order.price) {
+                document.getElementById('orderPrice').textContent =
+                    parseInt(order.price).toLocaleString() + ' грн';
+                document.getElementById('orderPriceRow').style.display = 'flex';
+            } else {
+                document.getElementById('orderPriceRow').style.display = 'none';
+            }
+
+            if (order.comment) {
+                document.getElementById('orderComment').textContent = order.comment;
+                document.getElementById('orderCommentRow').style.display = 'flex';
+            } else {
+                document.getElementById('orderCommentRow').style.display = 'none';
+            }
+
+            const stagesList = document.getElementById('stagesList');
+            stagesList.innerHTML = stages.map(stage => {
+                let cls = '';
+                if (stage.completed) cls = 'completed';
+                else if (stage.stage === order.status) cls = 'active';
+                return `
+          <div class="stage-item ${cls}">
+            <div class="stage-dot"></div>
+            <div>
+              <div class="stage-name">${stage.stage}</div>
+              ${stage.completed_at
+                    ? `<div style="font-size:0.8rem; color:#64748b;">
+                     ${new Date(stage.completed_at).toLocaleString('uk-UA')}
+                   </div>`
+                    : ''}
+            </div>
+            ${stage.completed
+                    ? '<div style="margin-left:auto; color:#22c55e; font-size:1.2rem;">✓</div>'
+                    : ''}
+          </div>
+        `;
+            }).join('');
+
+            document.getElementById('statusResult').style.display = 'block';
+
+        } catch (e) {
+            document.getElementById('statusError').style.display = 'block';
+        }
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const orderId = urlParams.get('id');
+    if (orderId) {
+        document.getElementById('orderIdInput').value = orderId;
+        checkStatus();
+    }
+</script>
+</body>
+</html>

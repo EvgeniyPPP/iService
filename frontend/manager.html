@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель менеджера — I Service</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="navbar-inner">
+        <div class="logo">I <span>Service</span></div>
+        <ul class="nav-links">
+            <li><a href="index.html">Головна</a></li>
+            <li><a href="manager.html">Замовлення</a></li>
+            <li><a href="manager.html#clients">Клієнти</a></li>
+            <li><a href="manager.html#services">Послуги</a></li>
+        </ul>
+        <div class="nav-auth" id="navAuth">
+            <a href="login.html" class="btn btn-outline">Увійти</a>
+            <a href="login.html" class="btn btn-primary">Реєстрація</a>
+        </div>
+    </div>
+</nav>
+
+<section class="hero" style="padding: 3rem 2rem;">
+    <div class="container">
+        <h1>Панель <span>менеджера</span></h1>
+        <p>Керування замовленнями, клієнтами та послугами</p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+
+        <div style="display:flex; gap:1rem; margin-bottom:2rem;
+                border-bottom:2px solid #e2e8f0; padding-bottom:0; flex-wrap:wrap;">
+            <button onclick="showManagerTab('orders')" id="mTabOrders"
+                    style="padding:0.75rem 1.5rem; border:none; background:none; font-size:1rem;
+               font-weight:700; cursor:pointer; color:#2563eb;
+               border-bottom:2px solid #2563eb; margin-bottom:-2px;">
+                📋 Замовлення
+            </button>
+            <button onclick="showManagerTab('clients')" id="mTabClients"
+                    style="padding:0.75rem 1.5rem; border:none; background:none; font-size:1rem;
+               font-weight:600; cursor:pointer; color:#64748b;">
+                👥 Клієнти
+            </button>
+            <button onclick="showManagerTab('services')" id="mTabServices"
+                    style="padding:0.75rem 1.5rem; border:none; background:none; font-size:1rem;
+               font-weight:600; cursor:pointer; color:#64748b;">
+                🔧 Послуги
+            </button>
+            <button onclick="showManagerTab('neworder')" id="mTabNeworder"
+                    style="padding:0.75rem 1.5rem; border:none; background:none; font-size:1rem;
+               font-weight:600; cursor:pointer; color:#64748b;">
+                ➕ Нове замовлення
+            </button>
+        </div>
+
+        <div id="mTabOrdersContent">
+            <div id="managerOrdersList">
+                <div style="text-align:center; color:#64748b; padding:3rem;">
+                    Завантаження замовлень...
+                </div>
+            </div>
+        </div>
+
+        <div id="mTabClientsContent" style="display:none;">
+            <div id="managerClientsList">
+                <div style="text-align:center; color:#64748b; padding:3rem;">
+                    Завантаження клієнтів...
+                </div>
+            </div>
+        </div>
+
+        <div id="mTabServicesContent" style="display:none;">
+
+            <div style="background:#fff; border-radius:16px; padding:2rem;
+                  box-shadow:0 4px 20px rgba(0,0,0,0.08); margin-bottom:2rem;">
+                <h3 style="font-weight:700; margin-bottom:1.5rem;">Додати нову послугу</h3>
+                <div id="serviceAlert"></div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+                    <div class="form-group">
+                        <label>Категорія</label>
+                        <input type="text" id="svcCategory" placeholder="Смартфони">
+                    </div>
+                    <div class="form-group">
+                        <label>Пристрій</label>
+                        <input type="text" id="svcDevice" placeholder="iPhone 14">
+                    </div>
+                    <div class="form-group">
+                        <label>Назва послуги</label>
+                        <input type="text" id="svcName" placeholder="Заміна АКБ">
+                    </div>
+                    <div class="form-group">
+                        <label>Ціна (грн)</label>
+                        <input type="number" id="svcPrice" placeholder="2000">
+                    </div>
+                    <div class="form-group">
+                        <label>Термін</label>
+                        <input type="text" id="svcDuration" placeholder="1-2 години">
+                    </div>
+                    <div class="form-group">
+                        <label>Опис</label>
+                        <input type="text" id="svcDesc" placeholder="Короткий опис послуги">
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="addService()">
+                    Додати послугу
+                </button>
+            </div>
+
+            <div id="managerServicesList"></div>
+        </div>
+
+        <div id="mTabNeworderContent" style="display:none;">
+            <div style="max-width:560px;">
+                <div style="background:#fff; border-radius:16px; padding:2.5rem;
+                    box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+                    <h2 style="font-size:1.3rem; font-weight:700; margin-bottom:1.5rem;">
+                        Створити замовлення
+                    </h2>
+                    <div id="managerNewOrderAlert"></div>
+                    <div class="form-group">
+                        <label>Ім'я клієнта *</label>
+                        <input type="text" id="mClientName" placeholder="Іван Іваненко">
+                    </div>
+                    <div class="form-group">
+                        <label>Телефон *</label>
+                        <input type="tel" id="mClientPhone" placeholder="+38 (050) 000-00-00">
+                    </div>
+                    <div class="form-group">
+                        <label>Пристрій *</label>
+                        <input type="text" id="mClientDevice" placeholder="iPhone 14">
+                    </div>
+                    <div class="form-group">
+                        <label>Опис проблеми *</label>
+                        <textarea id="mClientProblem"
+                                  placeholder="Опишіть проблему..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Вартість (грн)</label>
+                        <input type="number" id="mClientPrice" placeholder="2000">
+                    </div>
+                    <button class="btn btn-primary btn-lg" style="width:100%;"
+                            onclick="managerCreateOrder()">
+                        Створити замовлення
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<div id="editModal" style="display:none; position:fixed; top:0; left:0; width:100%;
+     height:100%; background:rgba(0,0,0,0.5); z-index:9999; align-items:center;
+     justify-content:center;">
+    <div style="background:#fff; border-radius:16px; padding:2.5rem;
+              width:90%; max-width:560px; max-height:90vh; overflow-y:auto;">
+        <h3 style="font-weight:700; margin-bottom:1.5rem;">Редагування замовлення</h3>
+        <input type="hidden" id="editId">
+        <div class="form-group">
+            <label>Ім'я клієнта</label>
+            <input type="text" id="editName">
+        </div>
+        <div class="form-group">
+            <label>Телефон</label>
+            <input type="text" id="editPhone">
+        </div>
+        <div class="form-group">
+            <label>Пристрій</label>
+            <input type="text" id="editDevice">
+        </div>
+        <div class="form-group">
+            <label>Проблема</label>
+            <textarea id="editProblem"></textarea>
+        </div>
+        <div class="form-group">
+            <label>Статус</label>
+            <select id="editStatus">
+                <option>Прийнято</option>
+                <option>Діагностика</option>
+                <option>Очікування запчастин</option>
+                <option>Ремонт</option>
+                <option>Тестування</option>
+                <option>Готово</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Вартість (грн)</label>
+            <input type="number" id="editPrice">
+        </div>
+        <div class="form-group">
+            <label>Коментар для клієнта</label>
+            <textarea id="editComment"></textarea>
+        </div>
+        <div style="display:flex; gap:1rem;">
+            <button class="btn btn-primary" onclick="saveEdit()">Зберегти</button>
+            <button class="btn btn-outline" onclick="closeModal()">Скасувати</button>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-inner">
+        <div class="footer-col">
+            <h4>I Service</h4>
+            <p>Професійний сервісний центр з ремонту смартфонів та техніки</p>
+        </div>
+        <div class="footer-col">
+            <h4>Навігація</h4>
+            <a href="about.html">Про нас</a>
+            <a href="services.html">Послуги</a>
+            <a href="calculator.html">Калькулятор</a>
+            <a href="contacts.html">Контакти</a>
+        </div>
+        <div class="footer-col">
+            <h4>Клієнтам</h4>
+            <a href="login.html">Особистий кабінет</a>
+            <a href="order.html">Створити заявку</a>
+            <a href="status.html">Статус замовлення</a>
+        </div>
+        <div class="footer-col">
+            <h4>Контакти</h4>
+            <p>📞 +38 (050) 000-00-00</p>
+            <p>📍 м. Київ, вул. Прикладна 1</p>
+            <p>🕐 Пн-Сб: 9:00 - 19:00</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2024 I Service. Всі права захищені</p>
+    </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+    const token = localStorage.getItem('token');
+    const role = localStorage.getItem('role');
+
+    // Захист сторінки
+    if (!token || role !== 'manager') {
+        window.location.href = 'login.html';
+    }
+
+    const statusColors = {
+        'Прийнято': 'badge-blue',
+        'Діагностика': 'badge-yellow',
+        'Очікування запчастин': 'badge-orange',
+        'Ремонт': 'badge-purple',
+        'Тестування': 'badge-yellow',
+        'Готово': 'badge-green'
+    };
+
+    const tabs = ['orders', 'clients', 'services', 'neworder'];
+    const tabNames = {
+        orders: 'mTabOrders',
+        clients: 'mTabClients',
+        services: 'mTabServices',
+        neworder: 'mTabNeworder'
+    };
+
+    function showManagerTab(tab) {
+        tabs.forEach(t => {
+            document.getElementById(`mTab${t.charAt(0).toUpperCase() + t.slice(1)}Content`)
+                .style.display = 'none';
+            const btn = document.getElementById(tabNames[t]);
+            btn.style.color = '#64748b';
+            btn.style.borderBottom = 'none';
+        });
+
+        document.getElementById(`mTab${tab.charAt(0).toUpperCase() + tab.slice(1)}Content`)
+            .style.display = 'block';
+        const activeBtn = document.getElementById(tabNames[tab]);
+        activeBtn.style.color = '#2563eb';
+        activeBtn.style.borderBottom = '2px solid #2563eb';
+
+        if (tab === 'clients') loadClients();
+        if (tab === 'services') loadManagerServices();
+    }
+
+    async function loadManagerOrders() {
+        try {
+            const res = await fetch('/api/manager/orders', {
+                headers: { 'authorization': token }
+            });
+            const orders = await res.json();
+            const container = document.getElementById('managerOrdersList');
+
+            if (orders.length === 0) {
+                container.innerHTML =
+                    '<div style="text-align:center; color:#64748b; padding:3rem;">Замовлень ще немає</div>';
+                return;
+            }
+
+            container.innerHTML = `
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Клієнт</th>
+                <th>Телефон</th>
+                <th>Пристрій</th>
+                <th>Проблема</th>
+                <th>Статус</th>
+                <th>Ціна</th>
+                <th>Дата</th>
+                <th>Дії</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${orders.map(o => `
+                <tr>
+                  <td><strong>#${o.id}</strong></td>
+                  <td>${o.client_name}</td>
+                  <td>${o.client_phone}</td>
+                  <td>${o.device}</td>
+                  <td style="max-width:150px; overflow:hidden;
+                             text-overflow:ellipsis; white-space:nowrap;">
+                    ${o.problem}
+                  </td>
+                  <td>
+                    <span class="badge ${statusColors[o.status] || 'badge-blue'}">
+                      ${o.status}
+                    </span>
+                  </td>
+                  <td>${o.price
+                ? parseInt(o.price).toLocaleString() + ' грн'
+                : '—'}</td>
+                  <td>${new Date(o.created_at).toLocaleDateString('uk-UA')}</td>
+                  <td>
+                    <button class="btn btn-primary"
+                      style="font-size:0.8rem; padding:0.4rem 0.8rem;"
+                      onclick="openEdit(${o.id}, '${o.client_name}',
+                        '${o.client_phone}', '${o.device}',
+                        \`${o.problem.replace(/`/g, "'")}\`,
+                        '${o.status}', '${o.price || ''}',
+                        \`${(o.comment || '').replace(/`/g, "'")}\`)">
+                      Редагувати
+                    </button>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>`;
+        } catch (e) {
+            document.getElementById('managerOrdersList').innerHTML =
+                '<div class="alert alert-error">Помилка завантаження</div>';
+        }
+    }
+
+    async function loadClients() {
+        try {
+            const res = await fetch('/api/manager/clients', {
+                headers: { 'authorization': token }
+            });
+            const clients = await res.json();
+            const container = document.getElementById('managerClientsList');
+
+            if (clients.length === 0) {
+                container.innerHTML =
+                    '<div style="text-align:center; color:#64748b; padding:3rem;">Клієнтів ще немає</div>';
+                return;
+            }
+
+            container.innerHTML = `
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Ім'я</th>
+                <th>Email</th>
+                <th>Телефон</th>
+                <th>Дата реєстрації</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${clients.map(c => `
+                <tr>
+                  <td>${c.id}</td>
+                  <td>${c.name}</td>
+                  <td>${c.email}</td>
+                  <td>${c.phone || '—'}</td>
+                  <td>${new Date(c.created_at).toLocaleDateString('uk-UA')}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>`;
+        } catch (e) {
+            document.getElementById('managerClientsList').innerHTML =
+                '<div class="alert alert-error">Помилка завантаження</div>';
+        }
+    }
+
+    async function loadManagerServices() {
+        try {
+            const res = await fetch('/api/services');
+            const services = await res.json();
+            const container = document.getElementById('managerServicesList');
+
+            container.innerHTML = `
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Категорія</th>
+                <th>Пристрій</th>
+                <th>Послуга</th>
+                <th>Ціна</th>
+                <th>Термін</th>
+                <th>Дії</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${services.map(s => `
+                <tr>
+                  <td>${s.id}</td>
+                  <td>${s.category}</td>
+                  <td>${s.device}</td>
+                  <td>${s.name}</td>
+                  <td>${parseInt(s.price).toLocaleString()} грн</td>
+                  <td>${s.duration}</td>
+                  <td>
+                    <button class="btn btn-danger"
+                      style="font-size:0.8rem; padding:0.4rem 0.8rem;"
+                      onclick="deleteService(${s.id})">
+                      Видалити
+                    </button>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>`;
+        } catch (e) {
+            console.error('Помилка завантаження послуг');
+        }
+    }
+
+    function openEdit(id, name, phone, device, problem, status, price, comment) {
+        document.getElementById('editId').value = id;
+        document.getElementById('editName').value = name;
+        document.getElementById('editPhone').value = phone;
+        document.getElementById('editDevice').value = device;
+        document.getElementById('editProblem').value = problem;
+        document.getElementById('editStatus').value = status;
+        document.getElementById('editPrice').value = price;
+        document.getElementById('editComment').value = comment;
+        document.getElementById('editModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('editModal').style.display = 'none';
+    }
+
+    async function saveEdit() {
+        const id = document.getElementById('editId').value;
+        const data = {
+            client_name: document.getElementById('editName').value,
+            client_phone: document.getElementById('editPhone').value,
+            device: document.getElementById('editDevice').value,
+            problem: document.getElementById('editProblem').value,
+            status: document.getElementById('editStatus').value,
+            price: document.getElementById('editPrice').value,
+            comment: document.getElementById('editComment').value
+        };
+
+        try {
+            await fetch(`/api/manager/orders/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authorization': token
+                },
+                body: JSON.stringify(data)
+            });
+
+            await fetch(`/api/manager/orders/${id}/status`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authorization': token
+                },
+                body: JSON.stringify({ status: data.status })
+            });
+
+            closeModal();
+            loadManagerOrders();
+        } catch (e) {
+            alert('Помилка збереження');
+        }
+    }
+
+    async function addService() {
+        const data = {
+            category: document.getElementById('svcCategory').value,
+            device: document.getElementById('svcDevice').value,
+            name: document.getElementById('svcName').value,
+            price: document.getElementById('svcPrice').value,
+            duration: document.getElementById('svcDuration').value,
+            description: document.getElementById('svcDesc').value
+        };
+
+        if (!data.category || !data.device || !data.name || !data.price) {
+            document.getElementById('serviceAlert').innerHTML =
+                '<div class="alert alert-error">Заповніть всі обов\'язкові поля</div>';
+            return;
+        }
+
+        try {
+            await fetch('/api/manager/services', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authorization': token
+                },
+                body: JSON.stringify(data)
+            });
+
+            document.getElementById('serviceAlert').innerHTML =
+                '<div class="alert alert-success">Послугу додано!</div>';
+
+            document.getElementById('svcCategory').value = '';
+            document.getElementById('svcDevice').value = '';
+            document.getElementById('svcName').value = '';
+            document.getElementById('svcPrice').value = '';
+            document.getElementById('svcDuration').value = '';
+            document.getElementById('svcDesc').value = '';
+
+            loadManagerServices();
+        } catch (e) {
+            document.getElementById('serviceAlert').innerHTML =
+                '<div class="alert alert-error">Помилка додавання</div>';
+        }
+    }
+
+    async function deleteService(id) {
+        if (!confirm('Видалити цю послугу?')) return;
+        try {
+            await fetch(`/api/manager/services/${id}`, {
+                method: 'DELETE',
+                headers: { 'authorization': token }
+            });
+            loadManagerServices();
+        } catch (e) {
+            alert('Помилка видалення');
+        }
+    }
+
+    async function managerCreateOrder() {
+        const client_name = document.getElementById('mClientName').value;
+        const client_phone = document.getElementById('mClientPhone').value;
+        const device = document.getElementById('mClientDevice').value;
+        const problem = document.getElementById('mClientProblem').value;
+        const price = document.getElementById('mClientPrice').value;
+
+        if (!client_name || !client_phone || !device || !problem) {
+            document.getElementById('managerNewOrderAlert').innerHTML =
+                '<div class="alert alert-error">Заповніть всі обов\'язкові поля</div>';
+            return;
+        }
+
+        try {
+            const res = await fetch('/api/orders/create', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ client_name, client_phone, device, problem, price })
+            });
+            const data = await res.json();
+
+            document.getElementById('managerNewOrderAlert').innerHTML =
+                `<div class="alert alert-success">
+           ✅ Замовлення №${data.orderId} створено!
+         </div>`;
+
+            document.getElementById('mClientName').value = '';
+            document.getElementById('mClientPhone').value = '';
+            document.getElementById('mClientDevice').value = '';
+            document.getElementById('mClientProblem').value = '';
+            document.getElementById('mClientPrice').value = '';
+
+            setTimeout(() => {
+                showManagerTab('orders');
+                loadManagerOrders();
+            }, 2000);
+        } catch (e) {
+            document.getElementById('managerNewOrderAlert').innerHTML =
+                '<div class="alert alert-error">Помилка підключення</div>';
+        }
+    }
+
+    loadManagerOrders();
+</script>
+</body>
+</html>

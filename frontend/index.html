@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I Service — Сервісний центр</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="navbar-inner">
+        <div class="logo">I <span>Service</span></div>
+        <ul class="nav-links">
+            <li><a href="index.html">Головна</a></li>
+            <li><a href="about.html">Про нас</a></li>
+            <li><a href="services.html">Послуги</a></li>
+            <li><a href="calculator.html">Калькулятор</a></li>
+            <li><a href="status.html">Статус замовлення</a></li>
+            <li><a href="contacts.html">Контакти</a></li>
+        </ul>
+        <div class="nav-auth" id="navAuth">
+            <a href="login.html" class="btn btn-outline">Увійти</a>
+            <a href="login.html" class="btn btn-primary">Реєстрація</a>
+        </div>
+    </div>
+</nav>
+
+<section class="hero">
+    <div class="container">
+        <h1>Професійний ремонт<br><span>смартфонів та техніки</span></h1>
+        <p>Швидко, якісно, з гарантією. Довіряйте своїй техніці тільки перевіреним майстрам</p>
+        <div class="hero-buttons">
+            <a href="calculator.html" class="btn btn-secondary btn-lg">🔘 Розрахувати вартість</a>
+            <a href="order.html" class="btn btn-outline btn-lg" style="color:white; border-color:white;">🔘 Створити заявку</a>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <h2 class="section-title">Чому обирають нас</h2>
+        <p class="section-subtitle">Ми працюємо для того, щоб ваша техніка служила довго</p>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Швидкий ремонт</h3>
+                <p>Більшість ремонтів виконуємо в день звернення. Цінуємо ваш час</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <h3>Гарантія якості</h3>
+                <p>Надаємо гарантію на всі види ремонту та використані запчастини</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💰</div>
+                <h3>Прозорі ціни</h3>
+                <p>Вартість ремонту фіксується до початку робіт. Жодних прихованих доплат</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔧</div>
+                <h3>Досвідчені майстри</h3>
+                <p>Наші спеціалісти мають досвід роботи понад 5 років з технікою Apple та Android</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section section-gray">
+    <div class="container">
+        <h2 class="section-title">Популярні послуги</h2>
+        <p class="section-subtitle">Найпопулярніші види ремонту від наших клієнтів</p>
+        <div class="services-grid" id="popularServices">
+            <div class="service-card">
+                <div class="device">📱 iPhone 14</div>
+                <h3>Заміна АКБ</h3>
+                <div class="price">2 000 грн</div>
+                <div class="duration">⏱ 1-2 години</div>
+            </div>
+            <div class="service-card">
+                <div class="device">📱 iPhone 13</div>
+                <h3>Заміна АКБ</h3>
+                <div class="price">1 800 грн</div>
+                <div class="duration">⏱ 1-2 години</div>
+            </div>
+            <div class="service-card">
+                <div class="device">📱 iPhone 14</div>
+                <h3>Заміна скла</h3>
+                <div class="price">2 500 грн</div>
+                <div class="duration">⏱ 2-3 години</div>
+            </div>
+            <div class="service-card">
+                <div class="device">📱 Samsung Galaxy S23</div>
+                <h3>Заміна АКБ</h3>
+                <div class="price">1 500 грн</div>
+                <div class="duration">⏱ 1-2 години</div>
+            </div>
+            <div class="service-card">
+                <div class="device">📱 iPhone 14</div>
+                <h3>Заміна дисплея</h3>
+                <div class="price">4 500 грн</div>
+                <div class="duration">⏱ 2-4 години</div>
+            </div>
+        </div>
+        <div style="text-align:center; margin-top:2.5rem;">
+            <a href="services.html" class="btn btn-primary btn-lg">Переглянути всі послуги</a>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <h2 class="section-title">Як проходить ремонт</h2>
+        <p class="section-subtitle">Прозорий процес на кожному етапі</p>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">📋</div>
+                <h3>1. Прийом заявки</h3>
+                <p>Заповнюєте форму або телефонуєте нам. Описуєте проблему з пристроєм</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔍</div>
+                <h3>2. Діагностика</h3>
+                <p>Майстер проводить безкоштовну діагностику та повідомляє точну вартість</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔧</div>
+                <h3>3. Ремонт</h3>
+                <p>Після вашого підтвердження починаємо ремонт. Ви можете відстежувати статус онлайн</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">✅</div>
+                <h3>4. Видача</h3>
+                <p>Перевіряємо роботу пристрою разом з вами та надаємо гарантійний талон</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-inner">
+        <div class="footer-col">
+            <h4>I Service</h4>
+            <p>Професійний сервісний центр з ремонту смартфонів та техніки</p>
+        </div>
+        <div class="footer-col">
+            <h4>Навігація</h4>
+            <a href="about.html">Про нас</a>
+            <a href="services.html">Послуги</a>
+            <a href="calculator.html">Калькулятор</a>
+            <a href="contacts.html">Контакти</a>
+        </div>
+        <div class="footer-col">
+            <h4>Клієнтам</h4>
+            <a href="login.html">Особистий кабінет</a>
+            <a href="order.html">Створити заявку</a>
+            <a href="status.html">Статус замовлення</a>
+        </div>
+        <div class="footer-col">
+            <h4>Контакти</h4>
+            <p>📞 +38 (050) 000-00-00</p>
+            <p>📍 м. Київ, вул. Прикладна 1</p>
+            <p>🕐 Пн-Сб: 9:00 - 19:00</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2024 I Service. Всі права захищені</p>
+    </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

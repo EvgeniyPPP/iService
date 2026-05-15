@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Послуги — I Service</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="navbar-inner">
+        <div class="logo">I <span>Service</span></div>
+        <ul class="nav-links">
+            <li><a href="index.html">Головна</a></li>
+            <li><a href="about.html">Про нас</a></li>
+            <li><a href="services.html">Послуги</a></li>
+            <li><a href="calculator.html">Калькулятор</a></li>
+            <li><a href="status.html">Статус замовлення</a></li>
+            <li><a href="contacts.html">Контакти</a></li>
+        </ul>
+        <div class="nav-auth" id="navAuth">
+            <a href="login.html" class="btn btn-outline">Увійти</a>
+            <a href="login.html" class="btn btn-primary">Реєстрація</a>
+        </div>
+    </div>
+</nav>
+
+<section class="hero" style="padding: 4rem 2rem;">
+    <div class="container">
+        <h1>Послуги та <span>прайс</span></h1>
+        <p>Повний список послуг для техніки Apple з фіксованими цінами</p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+
+        <div style="margin-bottom:2rem;">
+            <label style="font-weight:700; display:block; margin-bottom:0.75rem;">
+                Оберіть модель iPhone:
+            </label>
+            <select id="modelFilter"
+                    style="padding:0.75rem 1rem; border:1.5px solid #e2e8f0; border-radius:8px;
+               font-size:0.95rem; min-width:220px; background:#fff;">
+                <option value="">Всі моделі</option>
+            </select>
+        </div>
+
+        <div style="display:flex; gap:0.75rem; margin-bottom:2.5rem; flex-wrap:wrap;"
+             id="serviceFilters">
+            <button class="btn btn-primary filter-btn" data-filter="">Всі послуги</button>
+        </div>
+
+        <div class="services-grid" id="servicesList">
+            <div style="text-align:center; color:#64748b; padding:3rem;">
+                Завантаження послуг...
+            </div>
+        </div>
+
+        <div style="text-align:center; margin-top:3rem;">
+            <a href="order.html" class="btn btn-primary btn-lg">
+                Створити заявку на ремонт
+            </a>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-inner">
+        <div class="footer-col">
+            <h4>I Service</h4>
+            <p>Професійний сервісний центр з ремонту смартфонів та техніки Apple</p>
+        </div>
+        <div class="footer-col">
+            <h4>Навігація</h4>
+            <a href="about.html">Про нас</a>
+            <a href="services.html">Послуги</a>
+            <a href="calculator.html">Калькулятор</a>
+            <a href="contacts.html">Контакти</a>
+        </div>
+        <div class="footer-col">
+            <h4>Клієнтам</h4>
+            <a href="login.html">Особистий кабінет</a>
+            <a href="order.html">Створити заявку</a>
+            <a href="status.html">Статус замовлення</a>
+        </div>
+        <div class="footer-col">
+            <h4>Контакти</h4>
+            <p>📞 +38 (050) 000-00-00</p>
+            <p>📍 м. Київ, вул. Прикладна 1</p>
+            <p>🕐 Пн-Сб: 9:00 - 19:00</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2024 I Service. Всі права захищені</p>
+    </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+    let allServices = [];
+    let activeServiceFilter = '';
+
+    async function loadServices() {
+        try {
+            const res = await fetch('/api/services');
+            allServices = await res.json();
+
+            const devices = [...new Set(allServices.map(s => s.device))];
+            const modelFilter = document.getElementById('modelFilter');
+            devices.forEach(d => {
+                const opt = document.createElement('option');
+                opt.value = d;
+                opt.textContent = d;
+                modelFilter.appendChild(opt);
+            });
+
+            const serviceNames = [...new Set(allServices.map(s => s.name))];
+            const filtersContainer = document.getElementById('serviceFilters');
+            serviceNames.forEach(name => {
+                const btn = document.createElement('button');
+                btn.className = 'btn btn-outline filter-btn';
+                btn.dataset.filter = name;
+                btn.textContent = name;
+                filtersContainer.appendChild(btn);
+            });
+
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => {
+                        b.classList.remove('btn-primary');
+                        b.classList.add('btn-outline');
+                    });
+                    btn.classList.add('btn-primary');
+                    btn.classList.remove('btn-outline');
+                    activeServiceFilter = btn.dataset.filter;
+                    renderServices();
+                });
+            });
+
+            renderServices();
+        } catch (e) {
+            document.getElementById('servicesList').innerHTML =
+                '<div style="text-align:center; color:#ef4444;">Помилка завантаження послуг</div>';
+        }
+    }
+
+    function renderServices() {
+        const modelVal = document.getElementById('modelFilter').value;
+        let filtered = allServices;
+
+        if (modelVal) {
+            filtered = filtered.filter(s => s.device === modelVal);
+        }
+        if (activeServiceFilter) {
+            filtered = filtered.filter(s => s.name === activeServiceFilter);
+        }
+
+        const container = document.getElementById('servicesList');
+        if (filtered.length === 0) {
+            container.innerHTML =
+                '<div style="text-align:center; color:#64748b; padding:3rem;">Послуги не знайдено</div>';
+            return;
+        }
+
+        container.innerHTML = filtered.map(s => `
+      <div class="service-card">
+        <div class="device">📱 ${s.device}</div>
+        <h3>${s.name}</h3>
+        <p style="color:#64748b; font-size:0.85rem; margin:0.5rem 0;">
+          ${s.description || ''}
+        </p>
+        <div class="price">${s.price.toLocaleString()} грн</div>
+        <div class="duration">⏱ ${s.duration}</div>
+        <a href="order.html" class="btn btn-primary"
+           style="margin-top:1rem; width:100%; text-align:center; display:block;">
+          Замовити
+        </a>
+      </div>
+    `).join('');
+    }
+
+    document.getElementById('modelFilter').addEventListener('change', renderServices);
+
+    loadServices();
+</script>
+</body>
+</html>
