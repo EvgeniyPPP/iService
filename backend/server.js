@@ -1,31 +1,40 @@
-const express = require('express');
-const cors = require('cors');
-const path = require('path');
-require('dotenv').config();
+var express = require('express')
+var cors = require('cors')
+var path = require('path')
+require('dotenv').config()
 
-const app = express();
+// створюю головний обєкт серверу
+var app = express()
 
-require('./database');
+// спочатку підключаю базу даних щоб таблиці створились
+require('./database')
 
-app.use(cors());
-app.use(express.json());
-app.use(express.static(path.join(__dirname, '../frontend')));
+// налаштовую middleware
+app.use(cors())
+app.use(express.json())
 
-const authRoutes = require('./routes/auth');
-const ordersRoutes = require('./routes/orders');
-const servicesRoutes = require('./routes/services');
-const managerRoutes = require('./routes/manager');
+// вказую де лежать html файли
+app.use(express.static(path.join(__dirname, '../frontend')))
 
-app.use('/api/auth', authRoutes);
-app.use('/api/orders', ordersRoutes);
-app.use('/api/services', servicesRoutes);
-app.use('/api/manager', managerRoutes);
+// підключаю всі маршрути
+var authRoutes = require('./routes/auth')
+var ordersRoutes = require('./routes/orders')
+var servicesRoutes = require('./routes/services')
+var managerRoutes = require('./routes/manager')
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/index.html'));
-});
+app.use('/api/auth', authRoutes)
+app.use('/api/orders', ordersRoutes)
+app.use('/api/services', servicesRoutes)
+app.use('/api/manager', managerRoutes)
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`✅ Сервер запущено: http://localhost:${PORT}`);
-});
+// головна сторінка
+app.get('/', function(req, res) {
+    res.sendFile(path.join(__dirname, '../frontend/index.html'))
+})
+
+// запускаю сервер на порту з .env або 8080
+var PORT = process.env.PORT || 8080
+app.listen(PORT, function() {
+    console.log('Сервер запущено на порту ' + PORT)
+    console.log('http://127.0.0.1:' + PORT)
+})

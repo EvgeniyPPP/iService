@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Вхід — I Service</title>
+    <title>Особистий кабінет — I Service</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
+<!-- навігація -->
 <nav class="navbar">
     <div class="navbar-inner">
         <div class="logo">I <span>Service</span></div>
@@ -26,100 +27,87 @@
     </div>
 </nav>
 
-<section class="section">
+<!-- банер -->
+<section class="hero" style="padding:4rem 2rem;">
     <div class="container">
-        <div style="max-width:460px; margin:0 auto;">
-
-            <div style="display:flex; border-bottom:2px solid #e2e8f0; margin-bottom:2rem;">
-                <button class="tab-btn active" id="tabLogin"
-                        onclick="switchTab('login')"
-                        style="flex:1; padding:1rem; border:none; background:none; font-size:1rem;
-                 font-weight:700; cursor:pointer; color:#2563eb; border-bottom:2px solid #2563eb; margin-bottom:-2px;">
-                    Увійти
-                </button>
-                <button class="tab-btn" id="tabRegister"
-                        onclick="switchTab('register')"
-                        style="flex:1; padding:1rem; border:none; background:none; font-size:1rem;
-                 font-weight:600; cursor:pointer; color:#64748b;">
-                    Реєстрація
-                </button>
-            </div>
-
-            <div id="loginForm">
-                <h2 style="font-size:1.5rem; font-weight:700; margin-bottom:1.5rem;">Вхід до кабінету</h2>
-                <div id="loginAlert"></div>
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" id="loginEmail" placeholder="your@email.com">
-                </div>
-                <div class="form-group">
-                    <label>Пароль</label>
-                    <input type="password" id="loginPassword" placeholder="Введіть пароль">
-                </div>
-                <button class="btn btn-primary btn-lg" style="width:100%;" onclick="login()">
-                    Увійти
-                </button>
-                <div style="text-align:center; margin-top:1rem;">
-                    <a href="#" onclick="switchTab('manager')" style="color:#64748b; font-size:0.9rem;">
-                        Вхід для менеджера →
-                    </a>
-                </div>
-            </div>
-
-            <div id="registerForm" style="display:none;">
-                <h2 style="font-size:1.5rem; font-weight:700; margin-bottom:1.5rem;">Створити акаунт</h2>
-                <div id="registerAlert"></div>
-                <div class="form-group">
-                    <label>Ім'я та прізвище</label>
-                    <input type="text" id="regName" placeholder="Іван Іваненко">
-                </div>
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" id="regEmail" placeholder="your@email.com">
-                </div>
-                <div class="form-group">
-                    <label>Телефон</label>
-                    <input type="tel" id="regPhone" placeholder="+38 (050) 000-00-00">
-                </div>
-                <div class="form-group">
-                    <label>Пароль</label>
-                    <input type="password" id="regPassword" placeholder="Мінімум 6 символів">
-                </div>
-                <button class="btn btn-primary btn-lg" style="width:100%;" onclick="register()">
-                    Зареєструватись
-                </button>
-            </div>
-
-            <div id="managerForm" style="display:none;">
-                <h2 style="font-size:1.5rem; font-weight:700; margin-bottom:1.5rem;">Вхід для менеджера</h2>
-                <div id="managerAlert"></div>
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" id="managerEmail" placeholder="manager@iservice.ua">
-                </div>
-                <div class="form-group">
-                    <label>Пароль</label>
-                    <input type="password" id="managerPassword" placeholder="Введіть пароль">
-                </div>
-                <button class="btn btn-primary btn-lg" style="width:100%;" onclick="managerLogin()">
-                    Увійти як менеджер
-                </button>
-                <div style="text-align:center; margin-top:1rem;">
-                    <a href="#" onclick="switchTab('login')" style="color:#64748b; font-size:0.9rem;">
-                        ← Вхід для клієнтів
-                    </a>
-                </div>
-            </div>
-
-        </div>
+        <h1>Особистий <span>кабінет</span></h1>
+        <p id="welcomeMsg">Керуйте своїми замовленнями</p>
     </div>
 </section>
 
+<!-- кабінет -->
+<section class="section">
+    <div class="container">
+
+        <!-- таби -->
+        <div style="display:flex; gap:1rem; margin-bottom:2rem;
+                border-bottom:2px solid #e2e8f0; flex-wrap:wrap;">
+            <button onclick="showTab('orders')" id="tabOrders"
+                    style="padding:0.75rem 1.5rem; border:none; background:none;
+               font-size:1rem; font-weight:700; cursor:pointer;
+               color:#2563eb; border-bottom:2px solid #2563eb; margin-bottom:-2px;">
+                Мої замовлення
+            </button>
+            <button onclick="showTab('neworder')" id="tabNeworder"
+                    style="padding:0.75rem 1.5rem; border:none; background:none;
+               font-size:1rem; font-weight:600; cursor:pointer;
+               color:#64748b;">
+                Нова заявка
+            </button>
+        </div>
+
+        <!-- мої замовлення -->
+        <div id="tabOrdersContent">
+            <div id="myOrders">
+                <div style="text-align:center; color:#64748b; padding:3rem;">
+                    Завантаження замовлень...
+                </div>
+            </div>
+        </div>
+
+        <!-- нова заявка -->
+        <div id="tabNeworderContent" style="display:none;">
+            <div style="max-width:560px;">
+                <div style="background:#fff; border-radius:16px; padding:2.5rem;
+                    box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+                    <h2 style="font-size:1.3rem; font-weight:700; margin-bottom:1.5rem;">
+                        Нова заявка на ремонт
+                    </h2>
+                    <div id="newOrderMsg"></div>
+                    <div class="form-group">
+                        <label>Ваше імʼя *</label>
+                        <input type="text" id="newName" placeholder="Іван Іваненко">
+                    </div>
+                    <div class="form-group">
+                        <label>Телефон *</label>
+                        <input type="tel" id="newPhone" placeholder="+38 (050) 000-00-00">
+                    </div>
+                    <div class="form-group">
+                        <label>Пристрій *</label>
+                        <input type="text" id="newDevice" placeholder="Наприклад: iPhone 14">
+                    </div>
+                    <div class="form-group">
+                        <label>Опис проблеми *</label>
+                        <textarea id="newProblem"
+                                  placeholder="Опишіть що трапилось..."></textarea>
+                    </div>
+                    <button class="btn btn-primary btn-lg" style="width:100%;"
+                            onclick="sendNewOrder()">
+                        Надіслати заявку
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- футер -->
 <footer>
     <div class="footer-inner">
         <div class="footer-col">
             <h4>I Service</h4>
-            <p>Професійний сервісний центр з ремонту смартфонів та техніки</p>
+            <p>Сервісний центр з ремонту техніки Apple</p>
         </div>
         <div class="footer-col">
             <h4>Навігація</h4>
@@ -148,116 +136,152 @@
 
 <script src="js/main.js"></script>
 <script>
-    function switchTab(tab) {
-        document.getElementById('loginForm').style.display = 'none';
-        document.getElementById('registerForm').style.display = 'none';
-        document.getElementById('managerForm').style.display = 'none';
 
-        document.getElementById('tabLogin').style.color = '#64748b';
-        document.getElementById('tabLogin').style.borderBottom = 'none';
-        document.getElementById('tabRegister').style.color = '#64748b';
-        document.getElementById('tabRegister').style.borderBottom = 'none';
+    var token = localStorage.getItem('token')
+    var name = localStorage.getItem('name')
+    var role = localStorage.getItem('role')
 
-        if (tab === 'login') {
-            document.getElementById('loginForm').style.display = 'block';
-            document.getElementById('tabLogin').style.color = '#2563eb';
-            document.getElementById('tabLogin').style.borderBottom = '2px solid #2563eb';
-        } else if (tab === 'register') {
-            document.getElementById('registerForm').style.display = 'block';
-            document.getElementById('tabRegister').style.color = '#2563eb';
-            document.getElementById('tabRegister').style.borderBottom = '2px solid #2563eb';
-        } else if (tab === 'manager') {
-            document.getElementById('managerForm').style.display = 'block';
+    // захист - тільки для клієнтів
+    if (!token || role != 'client') {
+        window.location.href = 'login.html'
+    }
+
+    document.getElementById('welcomeMsg').textContent = 'Вітаємо, ' + name + '!'
+
+    var кольори = {
+        'Прийнято': 'badge-blue',
+        'Діагностика': 'badge-yellow',
+        'Очікування запчастин': 'badge-orange',
+        'Ремонт': 'badge-purple',
+        'Тестування': 'badge-yellow',
+        'Готово': 'badge-green'
+    }
+
+    function showTab(tab) {
+        document.getElementById('tabOrdersContent').style.display = 'none'
+        document.getElementById('tabNeworderContent').style.display = 'none'
+        document.getElementById('tabOrders').style.color = '#64748b'
+        document.getElementById('tabOrders').style.borderBottom = 'none'
+        document.getElementById('tabNeworder').style.color = '#64748b'
+        document.getElementById('tabNeworder').style.borderBottom = 'none'
+
+        if (tab == 'orders') {
+            document.getElementById('tabOrdersContent').style.display = 'block'
+            document.getElementById('tabOrders').style.color = '#2563eb'
+            document.getElementById('tabOrders').style.borderBottom = '2px solid #2563eb'
+        } else {
+            document.getElementById('tabNeworderContent').style.display = 'block'
+            document.getElementById('tabNeworder').style.color = '#2563eb'
+            document.getElementById('tabNeworder').style.borderBottom = '2px solid #2563eb'
+            document.getElementById('newName').value = name || ''
         }
     }
 
-    function showAlert(id, message, type) {
-        document.getElementById(id).innerHTML =
-            `<div class="alert alert-${type}">${message}</div>`;
+    // завантажуємо замовлення клієнта
+    function loadMyOrders() {
+        fetch('/api/orders/my', {
+            headers: { 'authorization': token }
+        })
+            .then(function(res) { return res.json() })
+            .then(function(orders) {
+                var container = document.getElementById('myOrders')
+
+                if (orders.length == 0) {
+                    container.innerHTML =
+                        '<div style="text-align:center; padding:3rem; color:#64748b;">' +
+                        '<div style="font-size:3rem; margin-bottom:1rem;">📋</div>' +
+                        '<div style="font-weight:600; margin-bottom:1rem;">У вас ще немає замовлень</div>' +
+                        '<button class="btn btn-primary" onclick="showTab(\'neworder\')">Створити першу заявку</button>' +
+                        '</div>'
+                    return
+                }
+
+                var html = '<div style="display:flex; flex-direction:column; gap:1rem;">'
+                for (var i = 0; i < orders.length; i++) {
+                    var o = orders[i]
+                    var badgeClass = кольори[o.status] || 'badge-blue'
+                    var date = new Date(o.created_at).toLocaleDateString('uk-UA')
+
+                    html += '<div style="background:#fff; border-radius:12px; padding:1.5rem; border:1px solid #e2e8f0;">'
+                    html += '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">'
+                    html += '<div style="font-weight:700;">Замовлення #' + o.id + '</div>'
+                    html += '<span class="badge ' + badgeClass + '">' + o.status + '</span>'
+                    html += '</div>'
+                    html += '<div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; color:#64748b; font-size:0.9rem;">'
+                    html += '<div>📱 ' + o.device + '</div>'
+                    html += '<div>📅 ' + date + '</div>'
+                    html += '<div style="grid-column:1/-1;">🔧 ' + o.problem + '</div>'
+                    if (o.price) {
+                        html += '<div style="color:#2563eb; font-weight:700;">💰 ' + parseInt(o.price).toLocaleString() + ' грн</div>'
+                    }
+                    html += '</div>'
+                    html += '<div style="margin-top:1rem;">'
+                    html += '<a href="status.html?id=' + o.id + '" class="btn btn-outline" style="font-size:0.85rem;">Детальний статус →</a>'
+                    html += '</div>'
+                    html += '</div>'
+                }
+                html += '</div>'
+                container.innerHTML = html
+            })
+            .catch(function() {
+                document.getElementById('myOrders').innerHTML =
+                    '<div class="alert alert-error">Помилка завантаження замовлень</div>'
+            })
     }
 
-    async function login() {
-        const email = document.getElementById('loginEmail').value;
-        const password = document.getElementById('loginPassword').value;
+    function sendNewOrder() {
+        var client_name = document.getElementById('newName').value
+        var client_phone = document.getElementById('newPhone').value
+        var device = document.getElementById('newDevice').value
+        var problem = document.getElementById('newProblem').value
 
-        if (!email || !password) {
-            return showAlert('loginAlert', 'Заповніть всі поля', 'error');
+        if (!client_name || !client_phone || !device || !problem) {
+            document.getElementById('newOrderMsg').innerHTML =
+                '<div class="alert alert-error">Заповніть всі поля</div>'
+            return
         }
 
-        try {
-            const res = await fetch('/api/auth/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password })
-            });
-            const data = await res.json();
+        var user_id = JSON.parse(atob(token.split('.')[1])).id
 
-            if (data.error) return showAlert('loginAlert', data.error, 'error');
+        fetch('/api/orders/create', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                client_name: client_name,
+                client_phone: client_phone,
+                device: device,
+                problem: problem,
+                user_id: user_id
+            })
+        })
+            .then(function(res) { return res.json() })
+            .then(function(data) {
+                if (data.error) {
+                    document.getElementById('newOrderMsg').innerHTML =
+                        '<div class="alert alert-error">' + data.error + '</div>'
+                    return
+                }
+                document.getElementById('newOrderMsg').innerHTML =
+                    '<div class="alert alert-success">✅ Замовлення №' + data.orderId + ' створено!</div>'
 
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('name', data.name);
-            localStorage.setItem('role', data.role);
-            window.location.href = 'cabinet.html';
-        } catch (e) {
-            showAlert('loginAlert', 'Помилка підключення до сервера', 'error');
-        }
+                document.getElementById('newPhone').value = ''
+                document.getElementById('newDevice').value = ''
+                document.getElementById('newProblem').value = ''
+
+                // через 2 секунди переходимо до списку замовлень
+                setTimeout(function() {
+                    showTab('orders')
+                    loadMyOrders()
+                }, 2000)
+            })
+            .catch(function() {
+                document.getElementById('newOrderMsg').innerHTML =
+                    '<div class="alert alert-error">Помилка підключення</div>'
+            })
     }
 
-    async function register() {
-        const name = document.getElementById('regName').value;
-        const email = document.getElementById('regEmail').value;
-        const phone = document.getElementById('regPhone').value;
-        const password = document.getElementById('regPassword').value;
+    loadMyOrders()
 
-        if (!name || !email || !password) {
-            return showAlert('registerAlert', 'Заповніть всі обов\'язкові поля', 'error');
-        }
-
-        try {
-            const res = await fetch('/api/auth/register', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, email, phone, password })
-            });
-            const data = await res.json();
-
-            if (data.error) return showAlert('registerAlert', data.error, 'error');
-
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('name', data.name);
-            localStorage.setItem('role', data.role);
-            window.location.href = 'cabinet.html';
-        } catch (e) {
-            showAlert('registerAlert', 'Помилка підключення до сервера', 'error');
-        }
-    }
-
-    async function managerLogin() {
-        const email = document.getElementById('managerEmail').value;
-        const password = document.getElementById('managerPassword').value;
-
-        if (!email || !password) {
-            return showAlert('managerAlert', 'Заповніть всі поля', 'error');
-        }
-
-        try {
-            const res = await fetch('/api/auth/manager-login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password })
-            });
-            const data = await res.json();
-
-            if (data.error) return showAlert('managerAlert', data.error, 'error');
-
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('name', data.name);
-            localStorage.setItem('role', data.role);
-            window.location.href = 'manager.html';
-        } catch (e) {
-            showAlert('managerAlert', 'Помилка підключення до сервера', 'error');
-        }
-    }
 </script>
 </body>
 </html>

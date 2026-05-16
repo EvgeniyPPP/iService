@@ -1,20 +1,23 @@
-const express = require('express');
-const router = express.Router();
-const db = require('../database');
+var express = require('express')
+var router = express.Router()
+var db = require('../database')
 
-router.get('/', (req, res) => {
-    const services = db.prepare('SELECT * FROM services ORDER BY category, device').all();
-    res.json(services);
-});
+// всі послуги
+router.get('/', function(req, res) {
+    var services = db.prepare('SELECT * FROM services ORDER BY device, name').all()
+    res.json(services)
+})
 
-router.get('/device/:device', (req, res) => {
-    const services = db.prepare('SELECT * FROM services WHERE device = ?').all(req.params.device);
-    res.json(services);
-});
+// послуги для конкретного пристрою - використовується в калькуляторі
+router.get('/device/:device', function(req, res) {
+    var services = db.prepare('SELECT * FROM services WHERE device = ?').all(req.params.device)
+    res.json(services)
+})
 
-router.get('/devices/list', (req, res) => {
-    const devices = db.prepare('SELECT DISTINCT device FROM services ORDER BY device').all();
-    res.json(devices);
-});
+// список унікальних моделей для калькулятора
+router.get('/devices/list', function(req, res) {
+    var devices = db.prepare('SELECT DISTINCT device FROM services ORDER BY device').all()
+    res.json(devices)
+})
 
-module.exports = router;
+module.exports = router

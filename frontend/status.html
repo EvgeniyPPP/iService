@@ -8,6 +8,7 @@
 </head>
 <body>
 
+<!-- навігація -->
 <nav class="navbar">
     <div class="navbar-inner">
         <div class="logo">I <span>Service</span></div>
@@ -26,17 +27,20 @@
     </div>
 </nav>
 
-<section class="hero" style="padding: 4rem 2rem;">
+<!-- банер -->
+<section class="hero" style="padding:4rem 2rem;">
     <div class="container">
         <h1>Статус <span>замовлення</span></h1>
-        <p>Введіть номер замовлення щоб дізнатися статус ремонту</p>
+        <p>Введіть номер замовлення щоб дізнатись статус ремонту</p>
     </div>
 </section>
 
+<!-- пошук -->
 <section class="section">
     <div class="container">
         <div style="max-width:500px; margin:0 auto;">
 
+            <!-- форма пошуку -->
             <div style="background:#fff; border-radius:16px; padding:2.5rem;
                   box-shadow:0 4px 20px rgba(0,0,0,0.08); margin-bottom:2rem;">
                 <h2 style="font-size:1.3rem; font-weight:700; margin-bottom:1.5rem;">
@@ -46,21 +50,26 @@
                     <label>Номер замовлення</label>
                     <input type="number" id="orderIdInput" placeholder="Наприклад: 1">
                 </div>
-                <button class="btn btn-primary btn-lg" style="width:100%;" onclick="checkStatus()">
+                <button class="btn btn-primary btn-lg" style="width:100%;"
+                        onclick="findOrder()">
                     Перевірити
                 </button>
             </div>
 
+            <!-- результат -->
             <div id="statusResult" style="display:none;">
 
+                <!-- інфо про замовлення -->
                 <div style="background:#fff; border-radius:16px; padding:2rem;
                     box-shadow:0 4px 20px rgba(0,0,0,0.08); margin-bottom:1.5rem;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+                    <div style="display:flex; justify-content:space-between;
+                      align-items:center; margin-bottom:1.5rem;">
                         <h3 style="font-size:1.1rem; font-weight:700;">
                             Замовлення <span id="orderNum"></span>
                         </h3>
                         <span id="orderBadge" class="badge"></span>
                     </div>
+
                     <div style="display:flex; flex-direction:column; gap:0.75rem;">
                         <div style="display:flex; justify-content:space-between;">
                             <span style="color:#64748b;">Клієнт:</span>
@@ -74,17 +83,20 @@
                             <span style="color:#64748b;">Проблема:</span>
                             <span id="orderProblem" style="font-weight:600;"></span>
                         </div>
-                        <div style="display:flex; justify-content:space-between;" id="orderPriceRow">
+                        <div style="display:flex; justify-content:space-between;"
+                             id="orderPriceRow">
                             <span style="color:#64748b;">Вартість:</span>
                             <span id="orderPrice" style="font-weight:600; color:#2563eb;"></span>
                         </div>
-                        <div style="display:flex; justify-content:space-between;" id="orderCommentRow">
+                        <div style="display:flex; justify-content:space-between;"
+                             id="orderCommentRow">
                             <span style="color:#64748b;">Коментар:</span>
                             <span id="orderComment" style="font-weight:600;"></span>
                         </div>
                     </div>
                 </div>
 
+                <!-- етапи ремонту -->
                 <div style="background:#fff; border-radius:16px; padding:2rem;
                     box-shadow:0 4px 20px rgba(0,0,0,0.08);">
                     <h3 style="font-size:1.1rem; font-weight:700; margin-bottom:1.5rem;">
@@ -95,19 +107,23 @@
 
             </div>
 
+            <!-- помилка -->
             <div id="statusError" style="display:none;">
-                <div class="alert alert-error">Замовлення не знайдено. Перевірте номер замовлення.</div>
+                <div class="alert alert-error">
+                    Замовлення не знайдено. Перевірте номер замовлення.
+                </div>
             </div>
 
         </div>
     </div>
 </section>
 
+<!-- футер -->
 <footer>
     <div class="footer-inner">
         <div class="footer-col">
             <h4>I Service</h4>
-            <p>Професійний сервісний центр з ремонту смартфонів та техніки</p>
+            <p>Сервісний центр з ремонту техніки Apple</p>
         </div>
         <div class="footer-col">
             <h4>Навігація</h4>
@@ -136,92 +152,104 @@
 
 <script src="js/main.js"></script>
 <script>
-    const statusColors = {
+
+    var кольори = {
         'Прийнято': 'badge-blue',
         'Діагностика': 'badge-yellow',
         'Очікування запчастин': 'badge-orange',
         'Ремонт': 'badge-purple',
         'Тестування': 'badge-yellow',
         'Готово': 'badge-green'
-    };
-
-    async function checkStatus() {
-        const id = document.getElementById('orderIdInput').value;
-        if (!id) return;
-
-        document.getElementById('statusResult').style.display = 'none';
-        document.getElementById('statusError').style.display = 'none';
-
-        try {
-            const res = await fetch(`/api/orders/status/${id}`);
-            if (!res.ok) {
-                document.getElementById('statusError').style.display = 'block';
-                return;
-            }
-
-            const data = await res.json();
-            const { order, stages } = data;
-
-            document.getElementById('orderNum').textContent = `#${order.id}`;
-            document.getElementById('orderClient').textContent = order.client_name;
-            document.getElementById('orderDevice').textContent = order.device;
-            document.getElementById('orderProblem').textContent = order.problem;
-
-            const badge = document.getElementById('orderBadge');
-            badge.textContent = order.status;
-            badge.className = 'badge ' + (statusColors[order.status] || 'badge-blue');
-
-            if (order.price) {
-                document.getElementById('orderPrice').textContent =
-                    parseInt(order.price).toLocaleString() + ' грн';
-                document.getElementById('orderPriceRow').style.display = 'flex';
-            } else {
-                document.getElementById('orderPriceRow').style.display = 'none';
-            }
-
-            if (order.comment) {
-                document.getElementById('orderComment').textContent = order.comment;
-                document.getElementById('orderCommentRow').style.display = 'flex';
-            } else {
-                document.getElementById('orderCommentRow').style.display = 'none';
-            }
-
-            const stagesList = document.getElementById('stagesList');
-            stagesList.innerHTML = stages.map(stage => {
-                let cls = '';
-                if (stage.completed) cls = 'completed';
-                else if (stage.stage === order.status) cls = 'active';
-                return `
-          <div class="stage-item ${cls}">
-            <div class="stage-dot"></div>
-            <div>
-              <div class="stage-name">${stage.stage}</div>
-              ${stage.completed_at
-                    ? `<div style="font-size:0.8rem; color:#64748b;">
-                     ${new Date(stage.completed_at).toLocaleString('uk-UA')}
-                   </div>`
-                    : ''}
-            </div>
-            ${stage.completed
-                    ? '<div style="margin-left:auto; color:#22c55e; font-size:1.2rem;">✓</div>'
-                    : ''}
-          </div>
-        `;
-            }).join('');
-
-            document.getElementById('statusResult').style.display = 'block';
-
-        } catch (e) {
-            document.getElementById('statusError').style.display = 'block';
-        }
     }
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const orderId = urlParams.get('id');
+    function findOrder() {
+        var id = document.getElementById('orderIdInput').value
+        if (!id) return
+
+        document.getElementById('statusResult').style.display = 'none'
+        document.getElementById('statusError').style.display = 'none'
+
+        fetch('/api/orders/status/' + id)
+            .then(function(res) {
+                if (!res.ok) {
+                    document.getElementById('statusError').style.display = 'block'
+                    return null
+                }
+                return res.json()
+            })
+            .then(function(data) {
+                if (!data) return
+
+                var order = data.order
+                var stages = data.stages
+
+                // заповнюємо інформацію
+                document.getElementById('orderNum').textContent = '#' + order.id
+                document.getElementById('orderClient').textContent = order.client_name
+                document.getElementById('orderDevice').textContent = order.device
+                document.getElementById('orderProblem').textContent = order.problem
+
+                // бейдж статусу
+                var badge = document.getElementById('orderBadge')
+                badge.textContent = order.status
+                badge.className = 'badge ' + (кольори[order.status] || 'badge-blue')
+
+                // ціна якщо є
+                if (order.price) {
+                    document.getElementById('orderPrice').textContent =
+                        parseInt(order.price).toLocaleString() + ' грн'
+                    document.getElementById('orderPriceRow').style.display = 'flex'
+                } else {
+                    document.getElementById('orderPriceRow').style.display = 'none'
+                }
+
+                // коментар якщо є
+                if (order.comment) {
+                    document.getElementById('orderComment').textContent = order.comment
+                    document.getElementById('orderCommentRow').style.display = 'flex'
+                } else {
+                    document.getElementById('orderCommentRow').style.display = 'none'
+                }
+
+                // малюємо етапи ремонту
+                var html = ''
+                for (var i = 0; i < stages.length; i++) {
+                    var s = stages[i]
+                    var cls = ''
+                    if (s.completed) cls = 'completed'
+                    else if (s.stage == order.status) cls = 'active'
+
+                    html += '<div class="stage-item ' + cls + '">'
+                    html += '<div class="stage-dot"></div>'
+                    html += '<div>'
+                    html += '<div class="stage-name">' + s.stage + '</div>'
+                    if (s.completed_at) {
+                        html += '<div style="font-size:0.8rem; color:#64748b;">' +
+                            new Date(s.completed_at).toLocaleString('uk-UA') + '</div>'
+                    }
+                    html += '</div>'
+                    if (s.completed) {
+                        html += '<div style="margin-left:auto; color:#22c55e; font-size:1.2rem;">✓</div>'
+                    }
+                    html += '</div>'
+                }
+                document.getElementById('stagesList').innerHTML = html
+
+                document.getElementById('statusResult').style.display = 'block'
+            })
+            .catch(function() {
+                document.getElementById('statusError').style.display = 'block'
+            })
+    }
+
+    // якщо в адресі є ?id=... - одразу шукаємо
+    var params = new URLSearchParams(window.location.search)
+    var orderId = params.get('id')
     if (orderId) {
-        document.getElementById('orderIdInput').value = orderId;
-        checkStatus();
+        document.getElementById('orderIdInput').value = orderId
+        findOrder()
     }
+
 </script>
 </body>
 </html>

@@ -8,6 +8,7 @@
 </head>
 <body>
 
+<!-- навігація -->
 <nav class="navbar">
     <div class="navbar-inner">
         <div class="logo">I <span>Service</span></div>
@@ -26,13 +27,15 @@
     </div>
 </nav>
 
-<section class="hero" style="padding: 4rem 2rem;">
+<!-- банер -->
+<section class="hero" style="padding:4rem 2rem;">
     <div class="container">
         <h1>Створити <span>замовлення</span></h1>
-        <p>Заповніть форму і ми зв'яжемося з вами найближчим часом</p>
+        <p>Заповніть форму і ми зв'яжемось з вами найближчим часом</p>
     </div>
 </section>
 
+<!-- форма замовлення -->
 <section class="section">
     <div class="container">
         <div style="max-width:560px; margin:0 auto;">
@@ -46,39 +49,46 @@
                 <div id="orderAlert"></div>
 
                 <div class="form-group">
-                    <label>Ваше ім'я *</label>
+                    <label>Ваше імʼя *</label>
                     <input type="text" id="clientName" placeholder="Іван Іваненко">
                 </div>
+
                 <div class="form-group">
                     <label>Телефон *</label>
                     <input type="tel" id="clientPhone" placeholder="+38 (050) 000-00-00">
                 </div>
+
                 <div class="form-group">
                     <label>Пристрій *</label>
                     <input type="text" id="clientDevice" placeholder="Наприклад: iPhone 14">
                 </div>
+
                 <div class="form-group">
                     <label>Опис проблеми *</label>
-                    <textarea id="clientProblem" placeholder="Опишіть що трапилось з вашим пристроєм..."></textarea>
+                    <textarea id="clientProblem"
+                              placeholder="Опишіть що трапилось з вашим пристроєм..."></textarea>
                 </div>
 
-                <button class="btn btn-primary btn-lg" style="width:100%;" onclick="createOrder()">
+                <button class="btn btn-primary btn-lg" style="width:100%;"
+                        onclick="sendOrder()">
                     Надіслати замовлення
                 </button>
 
                 <p style="color:#64748b; font-size:0.85rem; text-align:center; margin-top:1rem;">
-                    Після отримання заявки ми зв'яжемося з вами протягом 30 хвилин
+                    Після отримання заявки ми зв'яжемось з вами протягом 30 хвилин
                 </p>
+
             </div>
         </div>
     </div>
 </section>
 
+<!-- футер -->
 <footer>
     <div class="footer-inner">
         <div class="footer-col">
             <h4>I Service</h4>
-            <p>Професійний сервісний центр з ремонту смартфонів та техніки</p>
+            <p>Сервісний центр з ремонту техніки Apple</p>
         </div>
         <div class="footer-col">
             <h4>Навігація</h4>
@@ -108,51 +118,66 @@
 <script src="js/main.js"></script>
 <script>
 
-    window.addEventListener('DOMContentLoaded', () => {
-        const name = localStorage.getItem('name');
+    // якщо клієнт залогінений - підставляємо його імʼя
+    window.addEventListener('DOMContentLoaded', function() {
+        var name = localStorage.getItem('name')
         if (name) {
-            document.getElementById('clientName').value = name;
+            document.getElementById('clientName').value = name
         }
-    });
+    })
 
-    function showAlert(message, type) {
-        document.getElementById('orderAlert').innerHTML =
-            `<div class="alert alert-${type}">${message}</div>`;
-    }
-
-    async function createOrder() {
-        const client_name = document.getElementById('clientName').value;
-        const client_phone = document.getElementById('clientPhone').value;
-        const device = document.getElementById('clientDevice').value;
-        const problem = document.getElementById('clientProblem').value;
+    function sendOrder() {
+        var client_name = document.getElementById('clientName').value
+        var client_phone = document.getElementById('clientPhone').value
+        var device = document.getElementById('clientDevice').value
+        var problem = document.getElementById('clientProblem').value
 
         if (!client_name || !client_phone || !device || !problem) {
-            return showAlert('Заповніть всі обов\'язкові поля', 'error');
+            document.getElementById('orderAlert').innerHTML =
+                '<div class="alert alert-error">Заповніть всі обовязкові поля</div>'
+            return
         }
 
-        const token = localStorage.getItem('token');
-        const user_id = token ? JSON.parse(atob(token.split('.')[1])).id : null;
-
-        try {
-            const res = await fetch('/api/orders/create', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ client_name, client_phone, device, problem, user_id })
-            });
-            const data = await res.json();
-
-            if (data.error) return showAlert(data.error, 'error');
-
-            showAlert(`✅ Замовлення №${data.orderId} успішно створено! Ми зв'яжемося з вами найближчим часом.`, 'success');
-
-            document.getElementById('clientPhone').value = '';
-            document.getElementById('clientDevice').value = '';
-            document.getElementById('clientProblem').value = '';
-
-        } catch (e) {
-            showAlert('Помилка підключення до сервера', 'error');
+        // беремо id користувача з токена якщо залогінений
+        var token = localStorage.getItem('token')
+        var user_id = null
+        if (token) {
+            user_id = JSON.parse(atob(token.split('.')[1])).id
         }
+
+        fetch('/api/orders/create', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                client_name: client_name,
+                client_phone: client_phone,
+                device: device,
+                problem: problem,
+                user_id: user_id
+            })
+        })
+            .then(function(res) { return res.json() })
+            .then(function(data) {
+                if (data.error) {
+                    document.getElementById('orderAlert').innerHTML =
+                        '<div class="alert alert-error">' + data.error + '</div>'
+                    return
+                }
+                document.getElementById('orderAlert').innerHTML =
+                    '<div class="alert alert-success">✅ Замовлення №' + data.orderId +
+                    ' успішно створено! Ми звяжемось з вами найближчим часом.</div>'
+
+                // очищаємо форму
+                document.getElementById('clientPhone').value = ''
+                document.getElementById('clientDevice').value = ''
+                document.getElementById('clientProblem').value = ''
+            })
+            .catch(function() {
+                document.getElementById('orderAlert').innerHTML =
+                    '<div class="alert alert-error">Помилка підключення до сервера</div>'
+            })
     }
+
 </script>
 </body>
 </html>
