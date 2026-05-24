@@ -1,0 +1,48 @@
+name: I Service CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # крок 1 - завантажуємо код з репозиторію
+      - name: Завантаження коду
+        uses: actions/checkout@v3
+
+      # крок 2 - встановлюємо Node.js
+      - name: Встановлення Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      # крок 3 - встановлюємо залежності
+      - name: Встановлення залежностей
+        run: npm install
+
+      # крок 4 - перевіряємо чи існують головні файли
+      - name: Перевірка файлів проекту
+        run: |
+          echo "Перевіряємо структуру проекту..."
+          ls -la
+          ls -la frontend/
+          ls -la backend/
+          echo "Всі файли на місці!"
+
+      # крок 5 - перевіряємо чи запускається сервер
+      - name: Перевірка запуску сервера
+        run: |
+          echo "Запускаємо сервер для перевірки..."
+          timeout 10 node backend/server.js &
+          sleep 5
+          echo "Сервер успішно запустився!"
+        env:
+          PORT: 8080
+          JWT_SECRET: iservice_secret_key_2024
